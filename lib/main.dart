@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +15,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        backgroundColor: Colors.yellow,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -32,11 +33,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final Random random = Random();
+  var colors = Colors.primaries;
+
+  String outputMessage = '';
+  final textFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +45,68 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: _counter % 2 == 0
+          ? colors[random.nextInt(colors.length)]
+          : Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text('$_counter', style: Theme.of(context).textTheme.headline4),
+          children: [
+            ElevatedButton(
+              onPressed: _incrementCounter,
+              child: const Text('Phần 1 - Đổi màu nền'),
+            ),
+            const SizedBox(height: 50),
+            SizedBox(
+              width: 200,
+              child: TextField(
+                controller: textFieldController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _checkPrimeNumber,
+              child: const Text('Phần 2 - Kiểm tra số nguyên tố'),
+            ),
+            const SizedBox(height: 10),
+            Text(outputMessage),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _checkPrimeNumber() {
+    String text = textFieldController.text;
+    setState(() {
+      int? number = int.tryParse(text.trim());
+      if (number == null) {
+        outputMessage = '$text không phải là số';
+      }
+
+      bool isPrimeNumber = _isPrimeNumber(number!);
+      outputMessage =
+          'Số $number vừa nhập ${isPrimeNumber ? 'có' : 'không'} là số nguyên tố.';
+    });
+  }
+
+  bool _isPrimeNumber(int number) {
+    if (number < 2) return false;
+    for (var i = 2; i <= number / 2; i++) {
+      if (number % i == 0) return false;
+    }
+    return true;
   }
 }
