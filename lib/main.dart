@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final Random random = Random();
   var colors = Colors.primaries;
 
-  String outputMessage = '';
+  String message = '';
   final textFieldController = TextEditingController();
 
   @override
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Phần 2 - Kiểm tra số nguyên tố'),
             ),
             const SizedBox(height: 10),
-            Text(outputMessage),
+            Text(message),
           ],
         ),
       ),
@@ -93,12 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       int? number = int.tryParse(text.trim());
       if (number == null) {
-        outputMessage = '$text không phải là số';
+        message = '$text không phải là số';
+      } else {
+        bool isPrimeNumber = _isPrimeNumber(number);
+        message =
+            'Số $number vừa nhập ${isPrimeNumber ? 'có' : 'không'} là số nguyên tố.';
       }
-
-      bool isPrimeNumber = _isPrimeNumber(number!);
-      outputMessage =
-          'Số $number vừa nhập ${isPrimeNumber ? 'có' : 'không'} là số nguyên tố.';
     });
   }
 
