@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         bool isPrimeNumber = _isPrimeNumber(number);
         message =
-            'Số $number vừa nhập ${isPrimeNumber ? 'có' : 'không'} là số nguyên tố.';
+            'Số $number ${isPrimeNumber ? 'là' : 'không phải'} số nguyên tố.';
       }
     });
   }
