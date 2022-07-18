@@ -290,8 +290,7 @@ class _EditProductState extends State<EditProduct> {
                               const Text('Enter a URL'),
                         ),
                       ),
-                      SizedBox(
-                        width: constraints.maxWidth - 110,
+                      Expanded(
                         child: TextFormField(
                           controller: imageUrlController,
                           decoration: const InputDecoration(
